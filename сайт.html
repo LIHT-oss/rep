@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Открытка</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    height: 100vh;
+    overflow: hidden;
+    background: radial-gradient(circle at 50% 40%, #2b0a1a, #12000a 70%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', cursive, sans-serif;
+  }
+
+  /* Пульсирующее сердце в центре */
+  .heart-center {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    background: #ff2d6f;
+    transform: rotate(-45deg) scale(0);
+    animation: heartPop 2.5s ease forwards, beat 1.2s 2.5s ease-in-out infinite;
+    box-shadow: 0 0 80px #ff2d6f, 0 0 160px #ff2d6f88;
+    z-index: 5;
+  }
+  .heart-center::before,
+  .heart-center::after {
+    content: '';
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    background: #ff2d6f;
+    border-radius: 50%;
+  }
+  .heart-center::before { top: -80px; left: 0; }
+  .heart-center::after { left: 80px; top: 0; }
+
+  @keyframes heartPop {
+    0% { transform: rotate(-45deg) scale(0); }
+    60% { transform: rotate(-45deg) scale(1.15); }
+    100% { transform: rotate(-45deg) scale(1); }
+  }
+  @keyframes beat {
+    0%, 100% { transform: rotate(-45deg) scale(1); }
+    25% { transform: rotate(-45deg) scale(1.08); }
+    50% { transform: rotate(-45deg) scale(0.97); }
+    75% { transform: rotate(-45deg) scale(1.05); }
+  }
+
+  /* Летящие сердечки */
+  .fly-heart {
+    position: absolute;
+    bottom: -40px;
+    color: #ff5c8a;
+    animation: fly linear forwards;
+    opacity: 0;
+    z-index: 1;
+  }
+  @keyframes fly {
+    0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-110vh) scale(1.2) rotate(360deg); opacity: 0; }
+  }
+
+  /* Текст признания */
+  .text-love {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(28px, 7vw, 64px);
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+    text-shadow: 0 0 20px #ff2d6f, 0 0 40px #ff2d6f, 0 0 80px #ff2d6f;
+    opacity: 0;
+    animation: textAppear 2s 2.8s ease forwards;
+    z-index: 10;
+    letter-spacing: 2px;
+    white-space: nowrap;
+  }
+  @keyframes textAppear {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); filter: blur(10px); }
+    100% { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: blur(0); }
+  }
+</style>
+</head>
+<body>
+
+  <div class="heart-center"></div>
+  <div class="text-love">Я тебя люблю ❤️</div>
+
+<script>
+  // Генерация летящих сердечек
+  const hearts = ['❤', '💖', '💕', '💗', '💓', '🩷'];
+  function spawnHeart() {
+    const h = document.createElement('div');
+    h.className = 'fly-heart';
+    h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+    h.style.left = Math.random() * 100 + 'vw';
+    h.style.fontSize = (Math.random() * 24 + 12) + 'px';
+    const duration = Math.random() * 4 + 5;
+    h.style.animationDuration = duration + 's';
+    h.style.animationDelay = Math.random() * 2 + 's';
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), (duration + 2) * 1000);
+  }
+  setInterval(spawnHeart, 250);
+  for (let i = 0; i < 10; i++) setTimeout(spawnHeart, i * 150);
+</script>
+
+</body>
+</html>
